@@ -1,16 +1,16 @@
 import fs from "fs";
 import path from "path";
 import { readFile, writeFile } from 'fs/promises';
-import S3Service from "./s3Service";
+import S3Service from "../aws/s3Service";
 import { Readable } from "stream";
-import { POPUP_ACTIONS, POPUP_DEFAULT_TIME_IN_SECONDS, TIME_UNITS } from "../utils/constants";
+import { POPUP_ACTIONS, POPUP_DEFAULT_TIME_IN_SECONDS, TIME_UNITS } from "../../utils/constants";
 export default class PopupService{
 
 
     static async  generatePopupTag(popupDataArray:IPopupData[]){
         try {
             // Read the template file asynchronously
-            const templatePath = path.join(__dirname, "../template/index.js");
+            const templatePath = './src/template/index.js';
             const template = await readFile(templatePath, "utf8");
             console.log("the template loaded is :",template.length);
             popupDataArray.forEach(popupData => {
@@ -41,7 +41,7 @@ export default class PopupService{
         
             // Define the output file path with a timestamp
             const outputFileName = `index${Date.now()}.js`;
-            const outputPath = path.resolve(__dirname, `../public/generated-popups/${outputFileName}`);
+            const outputPath = `./outputTemplates/${outputFileName}`
         
             // Write the modified content to the new file asynchronously
              await writeFile(outputPath, modifiedTemplate);
